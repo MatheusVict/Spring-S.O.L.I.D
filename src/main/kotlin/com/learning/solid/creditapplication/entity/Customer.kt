@@ -1,6 +1,7 @@
 package com.learning.solid.creditapplication.entity
 
 import jakarta.persistence.*
+import java.math.BigDecimal
 
 @Entity
 data class Customer(
@@ -16,6 +17,9 @@ data class Customer(
     @Column(nullable = false, unique = true)
     val cpf: String = "",
 
+    @Column(nullable = false)
+    var income: BigDecimal = BigDecimal.ZERO,
+
     @Column(nullable = false, unique = true)
     var email: String = "",
 
@@ -28,5 +32,5 @@ data class Customer(
 
     @Column(nullable = false)
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "customer")
-    var credits: List<Credit>
+    var credits: List<Credit> = mutableListOf()
 )
