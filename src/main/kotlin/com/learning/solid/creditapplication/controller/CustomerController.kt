@@ -5,6 +5,8 @@ import com.learning.solid.creditapplication.dto.CustomerUpdateDTO
 import com.learning.solid.creditapplication.dto.CustomerView
 import com.learning.solid.creditapplication.entity.Customer
 import com.learning.solid.creditapplication.services.impl.CustomerService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -22,31 +24,33 @@ class CustomerController(
 ) {
 
   @PostMapping
-  fun saveCustomer(@RequestBody customerDTO: CustomerDTO): String {
+  fun saveCustomer(@RequestBody customerDTO: CustomerDTO): ResponseEntity<String> {
     val savedCustomer = this.customerService.save(customerDTO.toEntity())
-    return "saved Customer ${savedCustomer.email} saved"
+    return ResponseEntity.status(HttpStatus.CREATED).body("saved Customer ${savedCustomer.email} saved")
   }
 
   @GetMapping("/{customerId}")
-  fun findById(@PathVariable customerId: Long): CustomerView {
+  fun findById(@PathVariable customerId: Long): ResponseEntity<CustomerView> {
     val customer: Customer = this.customerService.findById(customerId)
-    return CustomerView(customer)
+    return ResponseEntity.ok().body(CustomerView(customer))
   }
 
   @PatchMapping("/{customerId}")
   fun update(
     @RequestParam(value = "customerId") customerId: Long,
     @RequestBody customerUpdateDTO: CustomerUpdateDTO
-  ): CustomerView {
+  ): ResponseEntity<CustomerView> {
     val customer: Customer = this.customerService.findById(customerId)
     val customerToUpdate = customerUpdateDTO.toEntity(customer)
     val customerUpdated: Customer = this.customerService.save(customerToUpdate)
-    return CustomerView(customerUpdated)
+    return ResponseEntity.ok().body(CustomerView(customerUpdated))
 
   }
 
   @DeleteMapping("/{customerId}")
-  fun delete(@PathVariable customerId: Long) =
+  fun delete(@PathVariable customerId: Long): ResponseEntity<String> {
     this.customerService.delete(customerId)
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted")
+  }
 
 }
