@@ -26,14 +26,14 @@ class CreditController(private val creditService: CreditService) {
     return "credit ${credit.creditCode} - customer ${credit.customer?.firstName} saved"
   }
 
-  @GetMapping("/{customerId}")
+  @GetMapping
   fun findAllByCustomerId(@RequestParam(value = "customerId") customerId: Long): List<CreditViewList> {
     return this.creditService.findAllByCostumer(customerId).stream().map { credit: Credit ->
       CreditViewList(credit)
     }.collect(Collectors.toList())
   }
 
-  @GetMapping
+  @GetMapping("/{creditId}")
   fun findByCreditCode(
     @RequestParam(value = "customerId") customerId: Long,
     @PathVariable creditCode: UUID
