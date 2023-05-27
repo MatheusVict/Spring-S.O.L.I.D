@@ -38,7 +38,7 @@ class CreditController(private val creditService: CreditService) {
     return ResponseEntity.ok().body(creditViewList)
   }
 
-  @GetMapping("/{creditId}")
+  @GetMapping("/{creditCode}")
   fun findByCreditCode(
     @RequestParam(value = "customerId") customerId: Long,
     @PathVariable creditCode: UUID

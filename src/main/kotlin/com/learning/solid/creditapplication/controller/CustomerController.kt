@@ -35,7 +35,7 @@ class CustomerController(
     return ResponseEntity.ok().body(CustomerView(customer))
   }
 
-  @PatchMapping("/{customerId}")
+  @PatchMapping
   fun update(
     @RequestParam(value = "customerId") customerId: Long,
     @RequestBody customerUpdateDTO: CustomerUpdateDTO

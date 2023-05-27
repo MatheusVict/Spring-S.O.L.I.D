@@ -23,7 +23,7 @@ data class Credit(
     @Column(nullable = false)
     val numberOfInstallments: Int = 0,
 
-    @Enumerated
+    @Enumerated(/*value = EnumType.STRING*/)
     val status: Status = Status.IN_PROGRESS,
 
     @ManyToOne
