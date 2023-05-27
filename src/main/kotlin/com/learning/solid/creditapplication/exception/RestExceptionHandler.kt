@@ -47,4 +47,30 @@ class RestExceptionHandler {
       )
     )
   }
+  @ExceptionHandler(BusinessException::class)
+  fun handlerValidException(exception: BusinessException): ResponseEntity<ExceptionDetails> {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(
+      ExceptionDetails(
+        title = "Bad Request, Consult the documentation",
+        timestamp = LocalDate.now(),
+        status = HttpStatus.BAD_REQUEST.value(),
+        exception = exception.javaClass.toString(),
+        details = mutableMapOf(exception.cause.toString() to exception.message)
+      )
+    )
+  }
+  @ExceptionHandler(IllegalAccessException::class)
+  fun handlerValidException(exception: IllegalAccessException): ResponseEntity<ExceptionDetails> {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(
+      ExceptionDetails(
+        title = "Illegal exception, Consult the documentation",
+        timestamp = LocalDate.now(),
+        status = HttpStatus.BAD_REQUEST.value(),
+        exception = exception.javaClass.toString(),
+        details = mutableMapOf(exception.cause.toString() to exception.message)
+      )
+    )
+  }
 }

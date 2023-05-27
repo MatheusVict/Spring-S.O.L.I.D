@@ -1,6 +1,7 @@
 package com.learning.solid.creditapplication.services.impl
 
 import com.learning.solid.creditapplication.entity.Credit
+import com.learning.solid.creditapplication.exception.BusinessException
 import com.learning.solid.creditapplication.repository.CreditRepository
 import com.learning.solid.creditapplication.services.ICreditService
 import org.springframework.stereotype.Service
@@ -24,8 +25,8 @@ class CreditService(
 
     override fun findByCreditCode(customerId: Long, creditCode: UUID): Credit {
         val credit = this.creditRepository.findByCreditCode(creditCode)
-            ?: throw RuntimeException("credit $creditCode doesn't exist")
+            ?: throw BusinessException("credit $creditCode doesn't exist")
 
-        return if(credit.customer?.id == customerId) credit else throw RuntimeException("you must to talk to admin")
+        return if(credit.customer?.id == customerId) credit else throw IllegalAccessException("you must to talk to admin")
     }
 }
