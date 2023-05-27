@@ -5,6 +5,7 @@ import com.learning.solid.creditapplication.dto.CustomerUpdateDTO
 import com.learning.solid.creditapplication.dto.CustomerView
 import com.learning.solid.creditapplication.entity.Customer
 import com.learning.solid.creditapplication.services.impl.CustomerService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -24,7 +25,7 @@ class CustomerController(
 ) {
 
   @PostMapping
-  fun saveCustomer(@RequestBody customerDTO: CustomerDTO): ResponseEntity<String> {
+  fun saveCustomer(@RequestBody @Valid customerDTO: CustomerDTO): ResponseEntity<String> {
     val savedCustomer = this.customerService.save(customerDTO.toEntity())
     return ResponseEntity.status(HttpStatus.CREATED).body("saved Customer ${savedCustomer.email} saved")
   }
@@ -38,7 +39,7 @@ class CustomerController(
   @PatchMapping
   fun update(
     @RequestParam(value = "customerId") customerId: Long,
-    @RequestBody customerUpdateDTO: CustomerUpdateDTO
+    @RequestBody @Valid customerUpdateDTO: CustomerUpdateDTO
   ): ResponseEntity<CustomerView> {
     val customer: Customer = this.customerService.findById(customerId)
     val customerToUpdate = customerUpdateDTO.toEntity(customer)
